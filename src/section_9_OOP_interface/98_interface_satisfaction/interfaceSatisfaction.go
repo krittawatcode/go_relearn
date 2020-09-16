@@ -44,7 +44,8 @@ func main() {
 	sword := Sword{name: "Muramasa-Sword"}
 	bow := Bow{name: "Gandiva-Bow"}
 
-	var w Weapon = sword
+	var w Weapon
+	w = sword
 	attack(w)
 
 	attack(sword)
