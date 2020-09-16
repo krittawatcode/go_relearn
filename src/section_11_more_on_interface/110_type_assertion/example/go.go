@@ -1,15 +1,11 @@
 package main
 
-import (
-	"fmt"
-	"io"
-	"os"
-)
+import "fmt"
 
 /*
 	https://tour.golang.org/methods/15
 
-	Type assertions
+		Type assertions
 	A type assertion provides access to an interface value's underlying concrete value.
 
 	t := i.(T)
@@ -25,24 +21,20 @@ import (
 	If not, ok will be false and t will be the zero value of type T, and no panic occurs.
 
 	Note the similarity between this syntax and that of reading from a map.
-
 */
 
 func main() {
+	var i interface{} = "hello"
 
-	// x.(T)
-	// key.(string)
+	s := i.(string)
+	fmt.Println(s)
 
-	/*
-		interface.(type/interface) <- asserted type
-	*/
+	s, ok := i.(string)
+	fmt.Println(s, ok)
 
-	var w io.Writer        // Write(p []byte) (n int, err error)
-	w = os.Stdout          // will return pointer of file
-	result := w.(*os.File) // *os.File & os.Stdout both imp io.Writer so we can assert it
-	// result := w.(*bytes.Buffer) // panic: interface conversion: io.Writer is *os.File, not *bytes.Buffer
-	fmt.Printf("%T , %#v\n", w, w) // will print type of dynamic value of w
-	fmt.Printf("%T , %#v\n", result, result)
-	// value will point back to os.Stdout value
+	f, ok := i.(float64)
+	fmt.Println(f, ok)
 
+	f = i.(float64) // panic
+	fmt.Println(f)
 }
