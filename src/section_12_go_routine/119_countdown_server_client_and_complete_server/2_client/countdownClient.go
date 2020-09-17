@@ -1,7 +1,23 @@
 package main
 
-import "net"
+import (
+	"io"
+	"log"
+	"net"
+	"os"
+)
 
 func main() {
-	net.Dial("tcp", "localhost:8080")
+	log.SetFlags(log.Ltime)
+	conn, err := net.Dial("tcp", "localhost:8080")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer conn.Close()
+	log.Println("Connected to server successfully")
+	log.Println("copy from conn to stdout")
+	// copy conn --> stdout
+	go io.Copy(os.Stdout, conn)
+	log.Println("copy from stdout to conn")
+	io.Copy(conn, os.Stdin)
 }
