@@ -31,11 +31,15 @@ func main() {
 func countingDownHandler(conn net.Conn) {
 	defer func() {
 		io.WriteString(conn, "Your connection will be close by server") // write back to the one who connect
+		log.Println("Connection is closed be client")
 		conn.Close()
 	}()
 	io.WriteString(conn, "Enter number : ")
 	input := bufio.NewScanner(conn)
 	count := Scan(input)
+	if count > 20 {
+		return
+	}
 	for {
 		io.WriteString(conn, strconv.Itoa(count)+"\n") // write back to the one who connect
 		time.Sleep(time.Second)
@@ -55,12 +59,13 @@ func countingDownHandler(conn net.Conn) {
 
 func Scan(input *bufio.Scanner) int {
 	if ok := input.Scan(); !ok {
-		log.Println("cannot scan value from conn")
+		log.Println("Cannot scan value from conn")
+		log.Println("Connection is closed be client")
 		return 0
 	}
 	count, err := strconv.Atoi(input.Text())
 	if err != nil {
-		log.Println("cannot conver value from Text to int. Value is : ", input.Text())
+		log.Println("Cannot convert value from Text to int. Value is : ", input.Text())
 		return 0
 	}
 	return count

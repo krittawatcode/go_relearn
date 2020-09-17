@@ -15,9 +15,9 @@ func main() {
 	}
 	defer conn.Close()
 	log.Println("Connected to server successfully")
-	log.Println("copy from conn to stdout")
+	log.Println("Copy from conn to stdout")
 	// copy conn --> stdout
 	go io.Copy(os.Stdout, conn)
-	log.Println("copy from stdout to conn")
+	log.Println("Copy from stdout to conn")
 	io.Copy(conn, os.Stdin)
 }
