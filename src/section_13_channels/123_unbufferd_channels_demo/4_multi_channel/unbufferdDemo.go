@@ -19,7 +19,7 @@ func square(ch chan int, chSquare chan int, done chan string) {
 		chSquare <- v * v
 	}
 	close(chSquare)
-	done <- "Done from square"
+	done <- "Done from Square"
 	fmt.Println("Square done")
 }
 
@@ -27,7 +27,7 @@ func receiver(chSquare chan int, done chan string) {
 	for v := range chSquare {
 		fmt.Println("\tReceive value : ", v)
 	}
-	done <- "Done from receiver"
+	done <- "Done from Receiver"
 	close(done)
 	fmt.Println("Receiver done")
 }
