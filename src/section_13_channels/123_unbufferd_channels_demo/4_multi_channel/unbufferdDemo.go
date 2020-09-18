@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 func sender(ch chan int, done chan string) {
 	for i := 0; i <= 5; i++ {
@@ -28,6 +31,7 @@ func receiver(chSquare chan int, done chan string) {
 		fmt.Println("\tReceive value : ", v)
 	}
 	done <- "Done from Receiver"
+	time.Sleep(100 * time.Millisecond)
 	close(done)
 	fmt.Println("Receiver done")
 }
