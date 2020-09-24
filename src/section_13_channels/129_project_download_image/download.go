@@ -28,9 +28,7 @@ func main() {
 	photos := Photos{}
 	err := getJson("https://jsonplaceholder.typicode.com/photos", &photos)
 	fmt.Println(err)
-	// fmt.Println(photos)
-	// fmt.Println(len(photos))
-	fmt.Println(photos[0:3])
+	fmt.Println(photos)
 }
 
 func getJson(url string, structType interface{}) error {
