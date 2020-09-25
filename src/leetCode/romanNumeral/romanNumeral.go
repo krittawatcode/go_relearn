@@ -27,24 +27,24 @@ var m = map[uint8]int{
 func romanToInt(s string) int {
 	var result int
 
-	prev := s[0]
-	value := m[prev]
+	prev := s[0]     // M // C
+	value := m[prev] // 1000
 	// fmt.Println(len(s))
-	for i := 1; i < len(s); i++ {
-		c := s[i]
-		v := m[c]
+	for i := 1; i < len(s); i++ { // i = 1 // i = 2
+		c := s[i] // C // M
+		v := m[c] // 100 // 1000
 
-		if v > m[prev] {
-			prev = c
-			result += v - value
+		if v > m[prev] { // 100 1000 // 1000 100
+			prev = c            // M
+			result += v - value // 1000 + 1000 - 100
 			value = 0
 
 			continue
 		}
 
-		prev = c
-		result += value
-		value = v
+		prev = c        // C
+		result += value // 1000
+		value = v       // 100
 	}
 
 	return result + value
