@@ -6,13 +6,13 @@ type KG float64
 type LB float64
 
 func main() {
-	a := 2
-	A := 3
-	fmt.Println(a + A)
+	// a := 2
+	// A := 3
+	// fmt.Println(a + A) // 5
 
-	b := "2"
-	B := "3"
-	fmt.Println(b + B)
+	// b := "2"
+	// B := "3"
+	// fmt.Println(b + B) // 23
 
 	/*
 		type declalation
