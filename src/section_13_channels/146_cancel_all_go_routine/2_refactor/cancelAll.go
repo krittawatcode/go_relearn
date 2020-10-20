@@ -9,14 +9,29 @@ import (
 	"time"
 )
 
-func running(track chan<- struct{}) {
+func running(name string, track chan<- struct{}) {
+	defer func() {
+		fmt.Printf("%s stopped running\n", name)
+	}()
 	rand.Seed(time.Now().UnixNano())
-	time.Sleep(time.Duration(10*time.Second + time.Duration(rand.Intn(100))*time.Millisecond))
-	track <- struct{}{}
+	// <-chan Time
+	chFinish := time.After(time.Duration(10*time.Second + time.Duration(rand.Intn(100))*time.Millisecond))
+
+	for isRacing() {
+		select {
+		case <-chFinish:
+			track <- struct{}{}
+		default:
+		}
+	}
+
 }
+
+var finishRacing = make(chan struct{})
 
 func main() {
 	defer func() {
+		time.Sleep(100 * time.Millisecond)
 		fmt.Println("Done")
 	}()
 
@@ -29,9 +44,9 @@ func main() {
 	track3 := make(chan struct{})
 	abort := make(chan struct{})
 
-	go running(track1)
-	go running(track2)
-	go running(track3)
+	go running("h1", track1)
+	go running("h2", track2)
+	go running("h3", track3)
 
 	lapseChan := make(chan time.Time)
 
@@ -61,13 +76,26 @@ func main() {
 			done = true
 		case v := <-lapseChan:
 			fmt.Println("Horses are running: ", v.Second())
-		case v := <-chInt:
-			done = true
-			fmt.Printf("User interrupt : %v \n", v)
 		case <-abort:
+			// finishRacing <- struct{}{}
+			close(finishRacing)
 			done = true
 			fmt.Println("User pressing Enter")
+		case v := <-chInt:
+			// finishRacing <- struct{}{}
+			close(finishRacing)
+			done = true
+			fmt.Printf("User interrupt : %v \n", v)
 		}
 	}
 
+}
+
+func isRacing() bool {
+	select {
+	case <-finishRacing:
+		return false
+	default:
+		return true
+	}
 }
